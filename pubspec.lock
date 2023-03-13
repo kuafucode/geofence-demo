@@ -219,9 +219,10 @@ packages:
   poly_geofence_service:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      name: poly_geofence_service
+      sha256: "6cbee824aa1c691e8921067eac15857efcf32e8b32cfd4270c98a7b60a4d05b9"
+      url: "https://pub.dev"
+    source: hosted
     version: "1.6.0"
   process:
     dependency: transitive

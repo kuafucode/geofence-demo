@@ -17,7 +17,7 @@ class _ExampleAppState extends State<ExampleApp> {
 
   // Create a [PolyGeofenceService] instance and set options.
   final _polyGeofenceService = PolyGeofenceService.instance.setup(
-      interval: 5000,
+      interval: 1000,
       accuracy: 100,
       loiteringDelayMs: 60000,
       statusChangeDelayMs: 10000,
@@ -99,6 +99,9 @@ class _ExampleAppState extends State<ExampleApp> {
     ),
   ];
 
+  Location _currentLocation =
+      new Location.fromJson({'latitude': 0.0, 'longitude': 0.0});
+
   // This function is to be called when the geofence status is changed.
   Future<void> _onPolyGeofenceStatusChanged(PolyGeofence polyGeofence,
       PolyGeofenceStatus polyGeofenceStatus, Location location) async {
@@ -110,6 +113,9 @@ class _ExampleAppState extends State<ExampleApp> {
   // This function is to be called when the location has changed.
   void _onLocationChanged(Location location) {
     print('location: ${location.toJson()}');
+    this.setState(() {
+      _currentLocation = location;
+    });
   }
 
   // This function is to be called when a location services status change occurs
@@ -190,6 +196,7 @@ class _ExampleAppState extends State<ExampleApp> {
     return StreamBuilder<PolyGeofence>(
       stream: _streamController.stream,
       builder: (context, snapshot) {
+        print('snapshot: ${this._currentLocation}');
         final updatedDateTime = DateTime.now();
         var content = snapshot.data?.toJson()['data']['about'] ?? '';
 
@@ -207,9 +214,15 @@ class _ExampleAppState extends State<ExampleApp> {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(8.0),
           children: [
-            // Text('•\t\tPolyGeofence (updated: $updatedDateTime)'),
+            Text('•\t\tPolyGeofence (updated: $updatedDateTime)'),
             // const SizedBox(height: 10.0),
             Text(content),
+            const Text('Debugging'),
+            Text('Lat:' +
+                this._currentLocation.latitude.toString() +
+                ' Long:' +
+                this._currentLocation.longitude.toString()),
+            Text('Speed:' + this._currentLocation.speed.toString()),
           ],
         );
       },
