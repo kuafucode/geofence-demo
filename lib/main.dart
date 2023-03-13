@@ -29,7 +29,7 @@ class _ExampleAppState extends State<ExampleApp> {
     PolyGeofence(
       id: 'park1',
       data: {
-        'about': 'Park 1',
+        'about': 'Park #1',
       },
       polygon: <LatLng>[
         const LatLng(52.04304, -0.746968),
@@ -72,7 +72,7 @@ class _ExampleAppState extends State<ExampleApp> {
     PolyGeofence(
       id: 'park2',
       data: {
-        'about': 'Park 2',
+        'about': 'Park #2',
       },
       polygon: <LatLng>[
         const LatLng(52.04108, -0.751603),
@@ -152,6 +152,11 @@ class _ExampleAppState extends State<ExampleApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          textTheme: TextTheme(
+        bodyText1: TextStyle(fontSize: 42.0),
+        bodyText2: TextStyle(fontSize: 42.0),
+      )),
       // A widget used when you want to start a foreground task when trying to minimize or close the app.
       // Declare on top of the [Scaffold] widget.
       home: WillStartForegroundTask(
@@ -210,19 +215,25 @@ class _ExampleAppState extends State<ExampleApp> {
           }
         }
 
+        if (content == '') {
+          content = 'Not inside any GeoFence';
+        }
+
         return ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(8.0),
           children: [
-            Text('•\t\tPolyGeofence (updated: $updatedDateTime)'),
-            // const SizedBox(height: 10.0),
             Text(content),
+            const SizedBox(height: 20.0),
             const Text('Debugging'),
-            Text('Lat:' +
-                this._currentLocation.latitude.toString() +
-                ' Long:' +
-                this._currentLocation.longitude.toString()),
-            Text('Speed:' + this._currentLocation.speed.toString()),
+            const SizedBox(height: 10.0),
+            Text('Lat:' + this._currentLocation.latitude.toString()),
+            const SizedBox(height: 5.0),
+            Text('Long:' + this._currentLocation.longitude.toString()),
+            const SizedBox(height: 5.0),
+            Text('Speed:' +
+                this._currentLocation.speed.toStringAsFixed(2) +
+                ' m/s'),
           ],
         );
       },
